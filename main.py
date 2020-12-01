@@ -1,14 +1,25 @@
 from fastapi import FastAPI
+from fastapi import BackgroundTasks
 from models import AvitoPair
 from db_handler import DataBaseHandler
 from web_parser import WebParser
 import datetime
+import asyncio
 
 app = FastAPI()
 
 ids = []
 data_base_handler = DataBaseHandler(path="Avito")
 web_parser = WebParser()
+loop = asyncio.get_event_loop()
+
+
+async def update_timestamps(pair: AvitoPair):
+    while True:
+        add_timestamp(pair=pair)
+        await asyncio.sleep(3600)  # sleeps for an hour
+
+
 
 
 @app.get("/")
@@ -19,11 +30,12 @@ async def root():
 @app.post("/add")
 async def add_pair(pair: AvitoPair):
     pair_id = str(data_base_handler.add_pair(pair))  # adds pair to the db
+    asyncio.ensure_future(update_timestamps(pair=pair))
     return {"id": pair_id}
 
 
 @app.post("/add_stamp")
-def add_stamp(pair: AvitoPair):
+def add_timestamp(pair: AvitoPair):
     pair_id = str(data_base_handler.get_pair_id(pair=pair))
     counter = str(web_parser.get_num_of_posts(pair=pair.dict()))
     timestamp = str(datetime.datetime.now().timestamp())
@@ -33,7 +45,8 @@ def add_stamp(pair: AvitoPair):
         "timestamp": timestamp,
     }
     data_base_handler.add_timestamp(params=params)
-    return {"res": "Timestamp is added"}
+    print("Timestamp is added :)")
+    #return {"res": "Timestamp is added"}
 
 
 @app.post("/get_timestamps")

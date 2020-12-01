@@ -44,11 +44,14 @@ class WebParser(object):
         )
         search_button.click()
         sleep(1)
-        num_of_posts_span = self.browser.find_element_by_css_selector(
-            "span[data-marker='page-title/count']"
-        )
-        num_of_posts = str(num_of_posts_span.get_attribute("innerHTML"))
-        num_of_posts = num_of_posts.replace("&nbsp;", "")  # deletes spaces from the string
+        try:
+            num_of_posts_span = self.browser.find_element_by_css_selector(
+                "span[data-marker='page-title/count']"
+            )
+            num_of_posts = str(num_of_posts_span.get_attribute("innerHTML"))
+            num_of_posts = num_of_posts.replace("&nbsp;", "")  # deletes spaces from the string
+        except Exception:
+            num_of_posts = "0"
         return num_of_posts
 
 
