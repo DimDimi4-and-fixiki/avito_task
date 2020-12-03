@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-
 class AvitoPair(BaseModel):
     """
     model of a pair of Phrase and Region for '/add'
