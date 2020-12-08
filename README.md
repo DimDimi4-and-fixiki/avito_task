@@ -13,5 +13,41 @@
  - `/stat` - Метод возвращает пары (*временная_метка*: *счетчик_числа_объявлений*). Число объявлений вычисляется каждый час и добавляется в базу данных в таблицу *TimeStamps*. На вход методу подается id (*string*) пары, зарегистрированной в системе
  
  - `/get_top` - Метод возвращает список ссылок на топ-5 объявлений. Принимает id (*string*) пары, которая зарегистрированна в системе
+ 
+##Примеры работы методов:
+- При вызове `/add("Диван", "Москва")` вернется результат:  
+```json 
+{  
+	"id": "1"  
+}
+```
+- При вызове `/stat("1")` вернется результат:
+```json 
+{
+  "result": {
+    "1607427986.62899": "44187"
+  }
+}
 
+```
+- При вызоdе `/get_top("1")` вернется результат:
+```json
+{
+  "result": [
+    "https://www.avito.ru/moskva/mebel_i_interer/divan_1661672386",
+    "https://www.avito.ru/moskva/mebel_i_interer/divan_1807130361",
+    "https://www.avito.ru/moskva/mebel_i_interer/divan_chesterfild_uglovoy_raskladnoy_akvamarin_1597487357",
+    "https://www.avito.ru/moskva/mebel_i_interer/uglovoy_divan_2057617591",
+    "https://www.avito.ru/moskva/mebel_i_interer/divan_s_mehanizmom_delfin_2039315793"
+  ]
+}
+```
+
+
+## Docker:
+- Для сбоки и запуска нужно выполнить команду `docker-compose up` (можно и даже лучше `docker-compose up --build`).  
+После чего будут загружены все нужные библиотеки,  
+chromedriver, google chrome, созданы таблицы в базе данных.
+Сам API использует 80ый порт.  
+Сборка Docker была проверена на Ubuntu.
 
