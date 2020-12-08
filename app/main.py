@@ -83,7 +83,7 @@ def add_timestamp(pair: AvitoPair):
     data_base_handler.add_timestamp(params=params)  # adds a record to the database
 
 
-@app.post("/stat")
+@app.get("/stat")
 def get_timestamps(pair_id: str):
     """
     Gets all timestamps and counters for the pair
@@ -96,7 +96,7 @@ def get_timestamps(pair_id: str):
     return {"result": res}
 
 
-@app.post("/get_top")
+@app.get("/get_top")
 def get_top(pair_id: str):
     """
     Gets top 5 posts for the pair
